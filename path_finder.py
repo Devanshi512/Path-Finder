@@ -69,5 +69,20 @@ class Cell:
 	def draw(self, win):
 		pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
     
-  def __lt__(self, other):
+        def __lt__(self, other):
 		return False
+
+
+'''
+    A* selects the path that minimizes
+
+    f(n)=g(n)+h(n)
+    where n is the next node on the path,
+          g(n) is the cost of the path from start node,
+          h(n) is a heuristic function 
+'''
+
+def heuristic(h1, h2):
+    x1, y1 = h1
+    x2, y2 = h2
+    return abs(x1 - x2) + abs(y1 - y2)
