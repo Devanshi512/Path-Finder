@@ -1,9 +1,13 @@
 import pygame
+import math
+from queue import PriorityQueue
+
 
 WIDTH = 800
 HEIGHT = 800
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("A* Path Finding Algorithm")
+
 
 # Color codes
 ORANGE = (255, 165, 0)  # Start Node
@@ -71,6 +75,20 @@ class Cell:
     
         def __lt__(self, other):
 		return False
+	
+	def update_neighbors(self, grid):
+		self.neighbors = []
+		if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_obstacle():  # DOWN
+		    self.neighbors.append(grid[self.row + 1][self.col])
+
+		if self.row > 0 and not grid[self.row - 1][self.col].is_obstacle():  # UP
+		    self.neighbors.append(grid[self.row - 1][self.col])
+
+		if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_obstacle():  # RIGHT
+		    self.neighbors.append(grid[self.row][self.col + 1])
+
+		if self.col > 0 and not grid[self.row][self.col - 1].is_obstacle():  # LEFT
+		    self.neighbors.append(grid[self.row][self.col - 1])
 
 
 '''
@@ -128,6 +146,62 @@ def get_clicked_cell_position(loc, total_rows, total_width):
     col = x // gap
 
     return row, col
+
+
+# Finalize and draw the path between start and end node on grid
+def final_path(came_from, current, draw):
+    while current in came_from:
+        current = came_from[current]
+        current.make_path()
+        draw()
+
+
+# Main functional logic of A* Algorithm
+def logic(draw, grid, start, end):
+    count = 0
+    priority_set = PriorityQueue()
+    priority_set.put((0, count, start))
+    came_from = {}
+
+    g_score = {spot: float("inf") for row in grid for spot in row}
+    g_score[start] = 0
+    f_score = {spot: float("inf") for row in grid for spot in row}
+    f_score[start] = heuristic(start.get_position(), end.get_position())
+
+    priority_set_hash = {start}
+
+    while not priority_set.empty():
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
+        current = priority_set.get()[2]
+        priority_set_hash.remove(current)
+
+        if current == end:
+            final_path(came_from, end, draw)
+            end.make_end()
+            return True
+
+        for neighbor in current.neighbors:
+            temp_gscore = g_score[current] + 1
+
+            if temp_gscore < g_score[neighbor]:
+                came_from[neighbor] = current
+                g_score[neighbor] = temp_gscore
+                f_score[neighbor] = temp_gscore + heuristic(neighbor.get_position(), end.get_position())
+                if neighbor not in priority_set_hash:
+                    count += 1
+                    priority_set.put((f_score[neighbor], count, neighbor))
+                    priority_set_hash.add(neighbor)
+                    neighbor.make_open()
+
+        draw()
+
+        if current != start:
+            current.make_closed()
+
+    return False
 
 
 def main(win, width):
