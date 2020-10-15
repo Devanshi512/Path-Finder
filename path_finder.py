@@ -86,3 +86,36 @@ def heuristic(h1, h2):
     x1, y1 = h1
     x2, y2 = h2
     return abs(x1 - x2) + abs(y1 - y2)
+ 
+	
+# Working with Grid 
+def create_grid(rows, width):
+    grid = []
+    gap = width // rows
+    for i in range(rows):
+        grid.append([])
+        for j in range(rows):
+            spot = Cell(i, j, gap, rows)
+            grid[i].append(spot)
+
+    return grid
+
+
+def draw_grid(win, rows, width):
+    gap = width // rows
+    for i in range(rows):
+        pygame.draw.line(win, GREY, (0, i * gap), (width, i * gap))
+        for j in range(rows):
+            pygame.draw.line(win, GREY, (j * gap, 0), (j * gap, width))
+
+
+def draw(win, grid, rows, width):
+    win.fill(WHITE)
+
+    for row in grid:
+        for spot in row:
+            spot.draw(win)
+
+    draw_grid(win, rows, width)
+    pygame.display.update()
+
