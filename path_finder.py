@@ -231,7 +231,7 @@ def main(win, width):
                     end.make_end()
 
                 elif spot != end and spot != start:
-                    spot.make_barrier()
+                    spot.make_obstacle()
 
             elif pygame.mouse.get_pressed()[2]:  # RIGHT
                 pos = pygame.mouse.get_pos()
@@ -242,6 +242,19 @@ def main(win, width):
                     start = None
                 elif spot == end:
                     end = None
+		
+	    if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and start and end:  # # Press "SPACEBAR" key to run the program
+                    for row in grid:
+                        for spot in row:
+                            spot.update_neighbors(grid)
+
+                    logic(lambda: draw(win, grid, ROWS, width), grid, start, end)
+
+                if event.key == pygame.K_c:
+                    start = None
+                    end = None
+                    grid = create_grid(ROWS, width)
 
     pygame.quit()
 
