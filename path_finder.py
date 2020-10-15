@@ -119,3 +119,59 @@ def draw(win, grid, rows, width):
     draw_grid(win, rows, width)
     pygame.display.update()
 
+	
+# Get currently clicked cell's location
+def get_clicked_cell_position(loc, total_rows, total_width):
+    gap = total_width // total_rows
+    y, x = loc
+    row = y // gap
+    col = x // gap
+
+    return row, col
+
+
+def main(win, width):
+    ROWS = 50
+    grid = create_grid(ROWS, width)
+
+    start = None
+    end = None
+
+    run = True
+    while run:
+        draw(win, grid, ROWS, width)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+            if pygame.mouse.get_pressed()[0]:  # LEFT
+                pos = pygame.mouse.get_pos()
+                row, col = get_clicked_cell_position(pos, ROWS, width)
+                spot = grid[row][col]
+                if not start and spot != end:
+                    start = spot
+                    start.make_start()
+
+                elif not end and spot != start:
+                    end = spot
+                    end.make_end()
+
+                elif spot != end and spot != start:
+                    spot.make_barrier()
+
+            elif pygame.mouse.get_pressed()[2]:  # RIGHT
+                pos = pygame.mouse.get_pos()
+                row, col = get_clicked_cell_position(pos, ROWS, width)
+                spot = grid[row][col]
+                spot.reset()  # Press "C" key to reset
+                if spot == start:
+                    start = None
+                elif spot == end:
+                    end = None
+
+    pygame.quit()
+
+
+# Execute the program
+main(WIN, WIDTH)
+
