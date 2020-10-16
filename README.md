@@ -27,6 +27,6 @@ This project is basically <strong>A* Algorithm</strong> which helps to find the 
 ### Getting Started
 
 * Install Python and any relevant IDE
-* Run into the IDE<br />
+* Run path_finder.py file into the IDE<br />
 ***Tip: Very first node would be "Start Node", Second would be "End Node" and rest of the nodes in black would be obstacles.<br /> 
         To clear or reset the whole grid, press "C" key. To run the program using any created scenario, press "Spacebar" key***
