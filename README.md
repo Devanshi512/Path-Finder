@@ -19,10 +19,10 @@ This project is basically <strong>A* Algorithm</strong> which helps to find the 
 ### Screenshots:::
 
 >> A. Scenario with start node, end node and obstacles
-![Alt text](Image/Scenario.jpg?raw=true "Scenario")
+![Alt text](Image/Scenario.JPG?raw=true "Scenario")
 
 >> B. Solution of above problem using A* algorithm
-![Alt text](Image/Solution.jpg?raw=true "Solution")
+![Alt text](Image/Solution.JPG?raw=true "Solution")
 
 ### Getting Started
 
