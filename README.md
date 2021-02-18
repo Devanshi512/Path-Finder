@@ -1,6 +1,6 @@
 # Path Finder
 
-This project is basically <strong>A* Algorithm</strong> which helps to find the shortest optimum path between two nodes.
+This project is basically using <strong>A* Algorithm</strong> which helps to find the shortest optimum path between two nodes.
 
 ### Overview
 
